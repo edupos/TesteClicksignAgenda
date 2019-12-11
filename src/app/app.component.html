@@ -1,0 +1,120 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-2 col-sm-12 margin-t"><img src="../assets/images/ubook.svg" /></div>
+    <div class="col-md-2 col-sm-12 margin-t">
+        <a href="#" class="btn btn-success btn-custom" *ngIf="this.contacts.length > 0"  data-toggle="modal"
+            data-target="#modalNew">
+            <span class="glyphicon glyphicon-ok img-circle text-primary btn-icon"></span>
+            + Criar Contato
+            </a>
+      <!-- <input type="button" id="btnModal" class="btn-success" *ngIf="this.contacts.length > 0" value="Criar contato" data-toggle="modal"
+        data-target="#modalNew" /> -->
+      </div>
+    <div class="col-md-8 col-sm-12 margin-t"><input type="text" [(ngModel)]="SearchBox" class="col-12" placeholder="Buscar..." /> </div>
+  </div>
+  <div class="row margin-t2" *ngIf="this.contacts.length > 0">
+    <table class="table">
+      <thead class="">
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Contatos</th>
+          <th scope="col">Email</th>
+          <th scope="col">Telefone</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor = "let c of getContacts()" [ngStyle]="{'background-color': (c.isNew == true? '#F9E79F' : '#FFFFFF') }" >
+          <td><button type="button" [ngStyle]="{'background-color': getColor(c.name)}" class="btn btn-primary btn-circle">{{c.name.charAt(0)}}</button></td>
+          <td>{{c.name}}</td>
+          <td>{{c.email}}</td>
+          <td>{{c.phone}}</td>
+          <td><a href="#" (click)="OpenUpdateContact(c)" data-toggle="modal" data-target="#modalNew"><img src="../assets/images/edit.svg"/></a></td>
+          <td><a href="#" (click)="OpenDeleteContact(c)" data-toggle="modal" data-target="#modalDelete"><img src="../assets/images/delete.svg"/></a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="row margin-t2" *ngIf="this.contacts.length == 0"  style="text-align: center;">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <img src="../assets/images/book.svg" />
+      <p>
+        Nenhum contato foi criado ainda.
+      </p>
+      <p>
+          <a href="#" class="btn btn-success btn-custom" data-toggle="modal"
+              data-target="#modalNew">
+              <span class="glyphicon glyphicon-ok img-circle text-primary btn-icon"></span>
+              + Criar Contato
+              </a>
+        <!-- <input type="button" class="btn-success" value="Criar contato" data-toggle="modal" data-target="#modalNew" /> -->
+      </p>
+    </div>
+    <div class="col-md-4"></div>
+  </div>
+
+</div>
+
+
+<div class="modal" id="modalNew" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Criar ou editar contato</h5>
+        <button type="button" class="close" (click)="ClearContact()" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          <label>Nome</label>
+          <input type="text" [(ngModel)]="tmpContact.name" class="col-12" />
+        </p>
+        <p>
+          <label>Email</label>
+          <input type="text" [(ngModel)]="tmpContact.email" class="col-12" />
+        </p>
+        <p>
+          <label>Telefone</label>
+          <br/>
+          <input type="text" [(ngModel)]="tmpContact.phone" class="col-4" />
+        </p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" (click)="ClearContact()" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+      <button type="button" (click)="NewContact()" 
+        [disabled]="tmpContact.name == '' || tmpContact.email == '' || tmpContact.phone == ''"
+        class="btn btn-primary">Salvar</button>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<div class="modal" id="modalDelete" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Excluir contato</h5>
+        <button type="button" class="close" (click)="ClearContact()" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          Deseja realmente excluir o contato?
+        </p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" (click)="ClearContact()" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+      <button type="button" (click)="DeleteContact()" class="btn btn-primary">Excluir</button>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<router-outlet></router-outlet>
